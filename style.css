@@ -1,0 +1,38 @@
+.page-header {
+    background-color: #cce1c7;
+    padding: 20px;
+    text-align: center;
+    border-bottom: 2px solid #ccc;
+}
+
+.personal-info {
+    background-color: #e9eebb;
+    display: inline-block;
+    padding: 20px;
+    width: 43%;
+    margin: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.work-info {
+    background-color: #d6edf1;
+    display: inline-block;
+    vertical-align: top;
+    width: 43%;
+    padding: 20px;
+    margin: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.biography {
+    text-align: center;
+}
+
+.personal-info, .work-info {
+    text-align: left;
+}
+
+#personal-info-header, #work-info-header {
+   text-align: center;
+}
