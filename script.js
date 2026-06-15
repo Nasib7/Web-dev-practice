@@ -3,49 +3,47 @@
 let personalInfoHeader = "Personal Information";
 document.getElementById("personal-info-header").innerHTML = `<i class="fa-solid fa-person"></i> ${personalInfoHeader}`;
 
-let title = "NASIB'S LIFE DASHBOARD";
+let title = "YOUR LIFE DASHBOARD";
 document.getElementById("title").innerHTML = `${title}`;
 
-let name = "Nasib Rahman Mazumder";
-document.getElementById("name").innerHTML = `Name: ${name}`;
-console.log(name);
+function Person(first, last, age, goal, game, hobby, dream) {
+  this.firstName = first;
+  this.lastName = last;
+  this.age = age;
+  this.goal = goal;
+  this.game = game;
+  this.hobby = hobby;
+  this.dream = dream;
+}
 
-let age = "23";
-document.getElementById("age").innerHTML = `Age: ${age}`;
-console.log(age);
-
-let goal = "To see life clearly without judgement and filters.";
-document.getElementById("goal").innerHTML = `Goal: ${goal}`;
-
-let game = "Red Dead Redemption 2";
-document.getElementById("game").innerHTML = `Game: ${game}`;
-
-let streak = "626 days";
-document.getElementById("streak").innerHTML = `Streak: ${streak}`;
-
-let hobby = "Playing guitar";
-document.getElementById("hobby").innerHTML = `Hobby: ${hobby}`;
-
-let dream = "To study in t10 schools in the US";
-document.getElementById("dream").innerHTML = `Dream: ${dream}`;
-
-let quote = "Whatever happens, happens.";
-document.getElementById("quote").innerHTML = `Favorite Quote: ${quote}`;
-
+let person1 = new Person(
+    "Nasib Rahman", 
+    "Mazumder", 
+    22, 
+    "To see life clearly without judgement and filters.", 
+    "Read Dead Redemption 2", 
+    "Playing guitar", 
+    "To study in T10 schools in the US");
+document.getElementById("name").innerHTML = `Name: ${person1.firstName} ${person1.lastName}`; 
+document.getElementById("age").innerText = `Age: ${person1.age}`;
+document.getElementById("goal").innerHTML = `Goal: ${person1.goal}`;
+document.getElementById("game").innerHTML = `Favorite Game: ${person1.game}`;
+document.getElementById("hobby").innerHTML = `Hobby: ${person1.hobby}`;
+document.getElementById("dream").innerHTML = `Dream: ${person1.dream}`;
 //work info dashboard
 
 let workInfoHeader = "Work Information";
 document.getElementById("work-info-header").innerHTML = `<i class="fa-solid fa-briefcase"></i> ${workInfoHeader}`;
 
-let company = "ARCED Foundation";
-document.getElementById("company").innerHTML = `Comapany: ${company}`;
+function Job(title, company, date, duration) {
+  this.title = title;
+  this.company = company;
+  this.date = date;
+  this.duration = duration;
+}
 
-let position = "Intern";
-document.getElementById("position").innerHTML = `Position: ${position}`;
-
-let date = "2024-06-07";
-document.getElementById("date").innerHTML = `Start Date: ${date}`;
-
-let duration = "3 months";
-document.getElementById("duration").innerHTML = `Duration: ${duration}`;
-
+let job1 = new Job("Intern", "ARCED FOUNDATION", "07/06/2026", "3 months");
+document.getElementById("company").innerHTML = `Title: ${job1.title}`; 
+document.getElementById("position").innerHTML = `Company: ${job1.company}`;
+document.getElementById("date").innerHTML = `Date: ${job1.date}`;
+document.getElementById("duration").innerHTML = `Duration: ${job1.duration}`;
