@@ -6,44 +6,30 @@ document.getElementById("personal-info-header").innerHTML = `<i class="fa-solid 
 let title = "YOUR LIFE DASHBOARD";
 document.getElementById("title").innerHTML = `${title}`;
 
-function Person(first, last, age, goal, game, hobby, dream) {
-  this.firstName = first;
-  this.lastName = last;
-  this.age = age;
-  this.goal = goal;
-  this.game = game;
-  this.hobby = hobby;
-  this.dream = dream;
-}
-
-let person1 = new Person(
-    "Nasib Rahman", 
-    "Mazumder", 
-    22, 
-    "To see life clearly without judgement and filters.", 
-    "Read Dead Redemption 2", 
-    "Playing guitar", 
-    "To study in T10 schools in the US");
-document.getElementById("name").innerHTML = `Name: ${person1.firstName} ${person1.lastName}`; 
-document.getElementById("age").innerText = `Age: ${person1.age}`;
-document.getElementById("goal").innerHTML = `Goal: ${person1.goal}`;
-document.getElementById("game").innerHTML = `Favorite Game: ${person1.game}`;
-document.getElementById("hobby").innerHTML = `Hobby: ${person1.hobby}`;
-document.getElementById("dream").innerHTML = `Dream: ${person1.dream}`;
 //work info dashboard
 
 let workInfoHeader = "Work Information";
 document.getElementById("work-info-header").innerHTML = `<i class="fa-solid fa-briefcase"></i> ${workInfoHeader}`;
 
-function Job(title, company, date, duration) {
-  this.title = title;
-  this.company = company;
-  this.date = date;
-  this.duration = duration;
-}
+//The part below is after the user clicks on the submit button and is redirected to dashboard.html
 
-let job1 = new Job("Intern", "ARCED FOUNDATION", "07/06/2026", "3 months");
-document.getElementById("company").innerHTML = `Title: ${job1.title}`; 
-document.getElementById("position").innerHTML = `Company: ${job1.company}`;
-document.getElementById("date").innerHTML = `Date: ${job1.date}`;
-document.getElementById("duration").innerHTML = `Duration: ${job1.duration}`;
+let userAnswers = localStorage.getItem('answers');
+//For deleting answers from localstorage since it only saves up to 10mb
+localStorage.removeItem('answers');
+let savedAnswers = JSON.parse(userAnswers);
+
+//The part below finds the id of each field and sets the textContent to the matching value of the object
+
+//For personal info questions
+document.getElementById("name").textContent = `Name: ${savedAnswers["name"]}`;
+document.getElementById("age").textContent = `Age: ${savedAnswers["age"]}`;
+document.getElementById("goal").textContent = `Goal: ${savedAnswers["goal"]}`;
+document.getElementById("game").textContent = `Favorite game: ${savedAnswers["game"]}`;
+document.getElementById("dream").textContent = `Dream: ${savedAnswers["dream"]}`;
+
+//For work info questions
+document.getElementById("company").textContent = `Company: ${savedAnswers["company"]}`;
+document.getElementById("position").textContent = `Position: ${savedAnswers["position"]}`;
+document.getElementById("date").textContent = `Date: ${savedAnswers["date"]}`;
+document.getElementById("duration").textContent = `Duration: ${savedAnswers["duration"]}`;
+
