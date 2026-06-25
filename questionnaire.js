@@ -1,12 +1,13 @@
 
-function Question(id, label, card) { // creates an object constructor function to create questions
+function Question(id, label, card, validation) { // creates an object constructor function to create questions
     this.id = id;
     this.label = label;
     this.card = card;
+    this.validation = validation;
 }
 
 //personal info questions
-let Q1 = new Question("name", "What is your name?", "personal-info-card");
+let Q1 = new Question("name", "What is your name?", "personal-info-card",);
 let Q2 = new Question("age", "What is your age?", "personal-info-card");
 let Q3 = new Question("goal", "What is your goal in life?", "personal-info-card");
 let Q4 = new Question("game", "What is your favorite game?", "personal-info-card");
@@ -48,6 +49,14 @@ function showQuestion(index) {
     input.type = "text";
     input.id = questions[index].id; //nextQuestion() uses this id to find and read the input later
     container.appendChild(input);
+
+    if (questions[currentQuestionIndex].id === "date") {
+        input.type = "date";
+    }
+    else {
+        input.type = "text";
+    }
+
     if (index === 0) {
         document.getElementById("prevBtn").style.display = "none";
     }   
@@ -73,6 +82,16 @@ showQuestion(currentQuestionIndex);
 
 let answers = {};
 
+
+/* (nextQuestion()) This runs every time Next is clicked. It:
+
+- Grabs the input box using the current question's id
+- Saves whatever the user typed into answers
+- Increases currentQuestionIndex by 1
+- Shows the next question 
+*/
+
+
 function nextQuestion() { 
     // only move forward if there are still questions left
     // questions.length - 1 is the index of the last question
@@ -82,17 +101,51 @@ function nextQuestion() {
         /* 
         The above line does two things in one:
         1. questions[currentQuestionIndex].id  
-        goes to the current question in the array and gets its id 
-        — so if you're on question 0, this gives you "name"
+        goes to the current question in the array and gets its id ,
+        so, if you're on question 0, this gives you "name"
         2. document.getElementById("name") 
         finds the input box on the page that has that id
 
         So this line is finding the input box the user just typed into.
         */
         // Check if the user left the answer empty before doing anything else
-        if (input.value === "") {
+        /* if (input.value === "") {
             alert("Please enter an answer before moving to the next question.");
             return; // Exit the function early if the input is empty
+        }
+        */
+        //Validation
+        // Makes sure user answers within 5-50 characters
+        if (questions[currentQuestionIndex].id === "name") {
+
+            if (input.value.length < 5 || input.value.length > 50) {
+                alert("Name has to be between 5 and 50 characters.")
+                return;
+            }
+        }
+        
+        /*  Stops user from answering a text. 
+            Makes sure age is between 0-120.
+            Makes sure age is not a decimal.
+         */
+        if (questions[currentQuestionIndex].id === "age") {
+
+            if (isNaN(input.value)) {
+                alert("Please enter a valid number, not text.");
+                return;
+            }
+
+            if (input.value <= 0 || input.value >= 120) {
+                alert("Age has to be between 0-120.");
+                return;
+            }
+
+            if (!Number.isInteger(Number(input.value))) {
+                alert("Age cannot be a decimal");
+                console.log(input.value.type);
+                return;
+            }
+            
         }
 
         answers[questions[currentQuestionIndex].id] = input.value; 
@@ -114,30 +167,16 @@ function nextQuestion() {
         This is the line that causes the error. 
         when all questions are done, this tries to show questions[3] which doesn't exist.
         */
-        showQuestion(currentQuestionIndex);
         console.log(answers);
    } 
 }
 
-/* (nextQuestion()) This runs every time Next is clicked. It:
-
-- Grabs the input box using the current question's id
-- Saves whatever the user typed into answers
-- Increases currentQuestionIndex by 1
-- Shows the next question 
-*/
 
 function prevQuestion() {  
     // only go back if we're not already on the first question
     // index 0 is the first question, so anything above 0 means we can go back 
     if (currentQuestionIndex > 0) {
         let input = document.getElementById(questions[currentQuestionIndex].id);
-
-        // Check if the user left the answer empty before doing anything else
-        if (input.value === "") {
-            alert("Please enter an answer before moving to the previous question.");
-            return; // Exit the function early if the input is empty
-        }
         answers[questions[currentQuestionIndex].id] = input.value; 
         currentQuestionIndex = currentQuestionIndex - 1;
         showQuestion(currentQuestionIndex);
@@ -145,24 +184,27 @@ function prevQuestion() {
     }    
 }
 
+
+
 function submitAnswers() {
     if (currentQuestionIndex === questions.length - 1) {
         let input = document.getElementById(questions[currentQuestionIndex].id);
 
-        if (input.value === "") {
+        /*if (input.value === "") {
             alert("Please enter an answer before moving to the next question.");
             return; // Exit the function early if the input is empty
 
         }
-
+        */
         answers[questions[currentQuestionIndex].id] = input.value;
         console.log(answers);  
         document.getElementById("submitBtn").style.display = "none";
         document.getElementById("prevBtn").style.display = "none";      
         document.getElementById("question-container").innerHTML = "<h2>Thank you for completing the questionnaire!</h2>";
         localStorage.setItem('answers', JSON.stringify(answers));
-        window.location.href = "dashboard.html";     
+        setTimeout(function() {
+            window.location.href = "dashboard.html";     
+        } , 2000);
     }
 }
 
-let myTimeout = setTimeout(submitAnswers, 3000);
