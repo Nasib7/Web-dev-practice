@@ -21,15 +21,15 @@ let savedAnswers = JSON.parse(userAnswers);
 //The part below finds the id of each field and sets the textContent to the matching value of the object
 
 //For personal info questions
-document.getElementById("name").textContent = `Name: ${savedAnswers["name"]}`;
-document.getElementById("age").textContent = `Age: ${savedAnswers["age"]}`;
-document.getElementById("goal").textContent = `Goal: ${savedAnswers["goal"]}`;
-document.getElementById("game").textContent = `Favorite game: ${savedAnswers["game"]}`;
-document.getElementById("dream").textContent = `Dream: ${savedAnswers["dream"]}`;
+document.getElementById("name").textContent = savedAnswers["name"];
+document.getElementById("age").textContent = savedAnswers["age"];
+document.getElementById("goal").textContent = savedAnswers["goal"];
+document.getElementById("game").textContent = savedAnswers["game"];
+document.getElementById("dream").textContent = savedAnswers["dream"];
 
 //For work info questions
-document.getElementById("company").textContent = `Company: ${savedAnswers["company"]}`;
-document.getElementById("position").textContent = `Position: ${savedAnswers["position"]}`;
-document.getElementById("date").textContent = `Date: ${savedAnswers["date"]}`;
-document.getElementById("duration").textContent = `Duration: ${savedAnswers["duration"]}`;
+document.getElementById("company").textContent = savedAnswers["company"];
+document.getElementById("position").textContent = savedAnswers["position"];
+document.getElementById("date").textContent = savedAnswers["date"];
+document.getElementById("duration").textContent = savedAnswers["duration"];
 
