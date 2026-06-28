@@ -36,3 +36,18 @@
 #personal-info-header, #work-info-header {
    text-align: center;
 }
+
+
+/* To make sure that the user downloads pdf 
+with the same background and color of the website
+*/
+body {
+    -webkit-print-color-adjust: exact !important; /* For Chrome, Safari, Edge */
+    print-color-adjust: exact !important;         /* Standard property */
+}
+
+@media print {
+    #downloadBtn {
+        display: none !important;
+    }
+}
