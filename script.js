@@ -33,3 +33,7 @@ document.getElementById("position").textContent = savedAnswers["position"];
 document.getElementById("date").textContent = savedAnswers["date"];
 document.getElementById("duration").textContent = savedAnswers["duration"];
 
+//For downloading pdf.
+function downloadPdf() {
+    window.print();
+}
