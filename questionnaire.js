@@ -1,4 +1,11 @@
 
+let currentQuestionIndex = 0;
+
+$(document).ready(function() {
+    showQuestion(currentQuestionIndex);
+});
+
+
 function Question(id, label, card, validation) { // creates an object constructor function to create questions
     this.id = id;
     this.label = label;
@@ -35,50 +42,47 @@ The index tells it which question from the array to show.
 */
 
 function showQuestion(index) {
-    let container = document.getElementById("question-container");
-    container.innerHTML = "";
+    let container = $("#question-container");
+    container.empty();
 
-    let question = document.createElement("p");
-    question.innerHTML = questions[index].label; /* Goes into the questions array,
+    let question = $("<p></p>").html(questions[index].label);
+    /* Goes into the questions array,
      picks the object at position index, and grabs its label property.
      That text gets placed inside the <p> element. 
      So if index is 0, this puts "What is your name?" into the paragraph. */
-    container.appendChild(question);
+    container.append(question);
 
-    let input = document.createElement("input");
-    input.type = "text";
-    input.id = questions[index].id; //nextQuestion() uses this id to find and read the input later
-    container.appendChild(input);
+    let input = $("<input>");
+    input.attr("type","text");
+    input.attr("id", questions[index].id); //nextQuestion() uses this id to find and read the input later
+    container.append(input);
 
     if (questions[currentQuestionIndex].id === "date") {
-        input.type = "date";
+        input.attr("type","date");
     }
     else {
-        input.type = "text";
+        input.attr("type","text");
     }
 
     if (index === 0) {
-        document.getElementById("prevBtn").style.display = "none";
+        $("#prevBtn").hide();
     }   
     else {
-        document.getElementById("prevBtn").style.display = "inline";
+        $("#prevBtn").show();
     }
     if (currentQuestionIndex === questions.length - 1) {
-        document.getElementById("nextBtn").style.display = "none";
+        $("#nextBtn").hide();
     } 
     else {
-        document.getElementById("nextBtn").style.display = "inline";
+        $("#nextBtn").show();
     }
     if (currentQuestionIndex === questions.length - 1) {
-        document.getElementById("submitBtn").style.display = "inline";
+        $("#submitBtn").show();
     }
     else {
-        document.getElementById("submitBtn").style.display = "none";
+        $("#submitBtn").hide();
     }
 }
-
-let currentQuestionIndex = 0;
-showQuestion(currentQuestionIndex);
 
 let answers = {};
 
@@ -97,14 +101,15 @@ function nextQuestion() {
     // questions.length - 1 is the index of the last question
     // if currentQuestionIndex is less than that, we're not at the end yet
     if (currentQuestionIndex < questions.length - 1) {
-        let input = document.getElementById(questions[currentQuestionIndex].id); 
+        let input = $("#" + questions[currentQuestionIndex].id); 
         /* 
         The above line does two things in one:
-        1. questions[currentQuestionIndex].id  
-        goes to the current question in the array and gets its id ,
+        1. questions[currentQuestionIndex].id
+        goes to the current question in the array and gets its id,
         so, if you're on question 0, this gives you "name"
-        2. document.getElementById("name") 
-        finds the input box on the page that has that id
+        2. $("#name")
+        uses jQuery to find the input box on the page that has that id,
+        the "#" is required to tell jQuery we are selecting by id
 
         So this line is finding the input box the user just typed into.
         */
@@ -117,8 +122,17 @@ function nextQuestion() {
         //Validation
         // Makes sure user answers within 5-50 characters
         if (questions[currentQuestionIndex].id === "name") {
+            /*
+            since input is now a jQuery object, .value won't work on it anymore. 
+            We'd need to use .val() instead to read what the user typed.
+            */
 
-            if (input.value.length < 5 || input.value.length > 50) {
+            if (/\d/.test(input.val())) {
+                alert("Name cannot be a number.")
+                return;
+            } 
+
+            if (input.val().length < 5 || input.val().length > 50) {
                 alert("Name has to be between 5 and 50 characters.")
                 return;
             }
@@ -130,36 +144,38 @@ function nextQuestion() {
          */
         if (questions[currentQuestionIndex].id === "age") {
 
-            if (isNaN(input.value)) {
+            if (isNaN(input.val())) {
                 alert("Please enter a valid number, not text.");
                 return;
             }
 
-            if (input.value <= 0 || input.value >= 120) {
+            if (input.val() <= 0 || input.val() >= 120) {
                 alert("Age has to be between 0-120.");
                 return;
             }
 
-            if (!Number.isInteger(Number(input.value))) {
+            if (!Number.isInteger(Number(input.val()))) {
                 alert("Age cannot be a decimal");
-                console.log(input.value.type);
+                console.log(input.val().type);
                 return;
             }
             
         }
 
-        answers[questions[currentQuestionIndex].id] = input.value; 
+        answers[questions[currentQuestionIndex].id] = input.val(); 
         /*
         Again two things happening:
 
-        1. input.value = reads whatever the user typed into the input box
+        1. input.val() = uses jQuery to read whatever the user typed into the input box,
+        .val() is jQuery's way of reading input values, replacing plain JS .value
+
         2. answers[questions[currentQuestionIndex].id] =
         saves it into the answers object using the question's id as the key
 
         So after Q1 this gives you answers["name"] = "Nasib". 
         After Q2 it gives you answers["age"] = "21". The answers object is slowly being filled up. 
         */
-        currentQuestionIndex = currentQuestionIndex + 1;
+        currentQuestionIndex++;
         showQuestion(currentQuestionIndex); 
         /*
         Calls showQuestion() again with the updated index. 
@@ -176,9 +192,9 @@ function prevQuestion() {
     // only go back if we're not already on the first question
     // index 0 is the first question, so anything above 0 means we can go back 
     if (currentQuestionIndex > 0) {
-        let input = document.getElementById(questions[currentQuestionIndex].id);
-        answers[questions[currentQuestionIndex].id] = input.value; 
-        currentQuestionIndex = currentQuestionIndex - 1;
+        let input = $("#" + questions[currentQuestionIndex].id);
+        answers[questions[currentQuestionIndex].id] = input.val(); 
+        currentQuestionIndex--;
         showQuestion(currentQuestionIndex);
         console.log(answers);
     }    
@@ -188,7 +204,7 @@ function prevQuestion() {
 
 function submitAnswers() {
     if (currentQuestionIndex === questions.length - 1) {
-        let input = document.getElementById(questions[currentQuestionIndex].id);
+        let input = $("#" + questions[currentQuestionIndex].id);
 
         /*if (input.value === "") {
             alert("Please enter an answer before moving to the next question.");
@@ -196,11 +212,11 @@ function submitAnswers() {
 
         }
         */
-        answers[questions[currentQuestionIndex].id] = input.value;
+        answers[questions[currentQuestionIndex].id] = input.val();
         console.log(answers);  
-        document.getElementById("submitBtn").style.display = "none";
-        document.getElementById("prevBtn").style.display = "none";      
-        document.getElementById("question-container").innerHTML = "<h2>Thank you for completing the questionnaire!</h2>";
+        $("#submitBtn").hide = "none";
+        $("#prevBtn").hide = "none";      
+        $("#question-container").html("<h2>Thank you for completing the questionnaire!</h2>");
         localStorage.setItem('answers', JSON.stringify(answers));
         setTimeout(function() {
             window.location.href = "dashboard.html";     
